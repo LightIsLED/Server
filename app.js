@@ -1,8 +1,9 @@
-import express from "express";
-import morgan from "morgan";
-import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
-import routes from "./routers";
+var express = require("express");
+var morgan = require("morgan");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var routes = require("./routers");
+
 const app = express();
 
 app.set("view-engine", "pug");
@@ -14,4 +15,4 @@ app.use(morgan("dev"));
 
 
 
-export default app;
+module.exports = app;

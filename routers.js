@@ -29,4 +29,4 @@ user: USER,
 editProfile: EDIT_PROFILE
 };
 
-export default routes;
+module.exports = routes;
