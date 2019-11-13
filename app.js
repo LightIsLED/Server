@@ -2,9 +2,12 @@ var express = require("express");
 var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
+
 var routes = require("./routers");
+const {sequelize} = require('./models');
 
 const app = express();
+sequelize.sync();
 
 app.set("view-engine", "pug");
 app.use(cookieParser());
