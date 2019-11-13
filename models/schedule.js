@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         medicineID: {
             type: DataTypes.INTEGER(15),
-            allowNull: false,
+            allowNull: true,
         },
         dose: {
             type: DataTypes.STRING(50),
