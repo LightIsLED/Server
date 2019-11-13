@@ -1,6 +1,15 @@
-import express from "express"
-import routes from "../routers";
+const express = require('express');
+const router = express.Router()
 
-const medicineRouter = express.Router();
+router.post('/addMedi', (req, res) => {
+    
+});
 
-export default medicineRouter;
+router.get('/', (req, res, next) => {
+    res.render('home', {
+        title: 'Mediger-Main',
+        user: null,
+    });
+});
+
+module.exports = router;

@@ -30,8 +30,12 @@ module.exports = (sequelize, DataTypes) => {
         scheName: {
             type: DataTypes.STRING(50),
         },
-        scheDate: {
+        startDate: {
             type: DataTypes.DATE,
+            allowNull: false,
+        },
+        endDate: {
+            type: DataTypes.DATE, 
             allowNull: false,
         },
         scheHour: {
