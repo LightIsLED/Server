@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "", // 각자 mysql 비밀번호 넣어서 쓰면 됨
+    "password": "",
     "database": "Mediger",
     "host": "127.0.0.1",
     "dialect": "mysql",
