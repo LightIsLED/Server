@@ -1,11 +1,9 @@
 const express = require("express");
 const routes = require("../routers");
-const userRouter = express.Router();
-const {isLoggedIn} = require("../routers/middlewares");
-const {profile} = require("../controllers/userController");
+const router = express.Router();
 
-router.get(routes.user, isLoggedIn, (req, res) => {
+router.get(routes.user, (req, res) => {
     res.render('profile');
 });
 
-module.exports = userRouter;
+module.exports = router;
