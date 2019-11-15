@@ -4,6 +4,8 @@ const userRouter = express.Router();
 const {isLoggedIn} = require("../routers/middlewares");
 const {profile} = require("../controllers/userController");
 
-router.get(routes.user, isLoggedIn, profile);
+router.get(routes.user, isLoggedIn, (req, res) => {
+    res.render('profile');
+});
 
 module.exports = userRouter;
