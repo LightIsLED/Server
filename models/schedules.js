@@ -7,14 +7,8 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             unique: true,
         },
-        //개인이 설정한 알람별로 id increments
-        //ex) User1이 아침/점심/저녁 일 3회 총 3일 먹으면
-        //userScheID-1: 첫날 아침
-        //userScheID-2: 첫날 점심
-        //userScheID-9: 셋째날 저녁
-        userScheID: {
-            type: DataTypes.INTEGER(15),
-            allowNull: false,
+        scheName: {
+            type: DataTypes.STRING(50),
         },
         userID: {
             type: DataTypes.INTEGER(15),
@@ -25,9 +19,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         dose: {
-            type: DataTypes.STRING(50),
-        },
-        scheName: {
             type: DataTypes.STRING(50),
         },
         startDate: {
