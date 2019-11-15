@@ -1,1 +1,1 @@
-import routes from "../routers";
+const route = require("../routers");

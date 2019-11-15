@@ -1,6 +1,9 @@
-import express from "express"
-import routes from "../routers";
-
+const express = require("express");
+const routes = require("../routers");
 const userRouter = express.Router();
+const {isLoggedIn} = require("../routers/middlewares");
+const {profile} = require("../controllers/userController");
 
-export default userRouter;
+router.get(routes.user, isLoggedIn, profile);
+
+module.exports = userRouter;
