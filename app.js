@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 var mainRouter = require("./routers/mainRouter");
 var medicineRouter = require("./routers/medicineRouter")
 var {sequelize} = require('./models');
+var routers = require('./routers');
 
 var app = express();
 sequelize.sync();
@@ -19,8 +20,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan("dev"));
 
-app.use('/', mainRouter);
-app.use('/medicine', medicineRouter)
+app.use(routers.home, mainRouter);
+app.use(routers.medicines, medicineRouter)
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

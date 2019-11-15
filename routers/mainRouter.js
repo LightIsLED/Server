@@ -1,7 +1,8 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+const routers = require('../routers');
 
-router.get('/addAlarm', (req, res) => {
+router.get(routers.addition, (req, res) => {
     res.render('alarm', {
         title: 'Mediger-MediInput', 
         user: null,
