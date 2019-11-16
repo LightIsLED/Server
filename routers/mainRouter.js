@@ -3,7 +3,6 @@ const routes = require("../routers");
 const router = express.Router();
 const {User} = require("../models");
 
-
 router.get('/addAlarm', (req, res) => {
     res.render('alarm', {
         title: 'Mediger-MediInput', 
