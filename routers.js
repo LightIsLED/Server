@@ -8,8 +8,9 @@ const MEDICATION = "/medication";
 
 //medicine list page
 const MEDICINES = "/medicines";
-const ADDITION = "/addition";
-const MEDICINE_DETAIL = "/{medicine-id}";
+//alarm addition page
+const ADDITIONFORM = "/addForm";
+const INSERT = "/insert";
 const EDIT_MEDICINE = "/{medicine-id}/edit";
 const DELETION = "/{medicine-id}/deletion";
 
@@ -24,8 +25,8 @@ join: JOIN,
 calendar: CALENDAR,
 medication: MEDICATION,
 medicines: MEDICINES,
-addition: ADDITION,
-medicineDetail: MEDICINE_DETAIL,
+addForm: ADDITIONFORM,
+insert: INSERT,
 editMedicine: EDIT_MEDICINE,
 deletion: DELETION,
 user: USER,

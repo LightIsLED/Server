@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan("dev"));
 
 app.use(routers.home, mainRouter);
-app.use(routers.medicines, medicineRouter)
+app.use(routers.addForm, medicineRouter)
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

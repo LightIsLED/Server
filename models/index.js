@@ -16,14 +16,21 @@ db.Schedule = require('./schedules')(sequelize, Sequelize);
 db.Intake = require('./intakes')(sequelize, Sequelize);
 db.Recommend = require('./recommends')(sequelize, Sequelize);
 
-db.User.belongsToMany(db.Medicine, {through: db.Schedule});
-db.Medicine.belongsToMany(db.User, {through: db.Medicine});
+db.User.hasMany(db.Schedule);
+db.Schedule.belongsTo(db.User);
+
+db.User.hasMany(db.Intake);
+db.Intake.belongsTo(db.User);
 
 db.Schedule.hasOne(db.Intake);
 db.Intake.belongsTo(db.Schedule);
 
-db.Schedule.belongsTo(db.User);
-db.Schedule.belongsTo(db.Medicine);
+db.Medicine.belongsToMany(db.Schedule, {
+  through: 'MediSchedules',
+});
+db.Schedule.belongsToMany(db.Medicine,{
+  through: 'MediSchedules',
+});
 
 db.Medicine.belongsToMany(db.Medicine, {
   foreignKey: 'recoMediID',
