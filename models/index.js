@@ -10,11 +10,11 @@ const sequelize = new Sequelize(
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.User = require('./user')(sequelize, Sequelize);
-db.Medicine = require('./medicine')(sequelize, Sequelize);
-db.Schedule = require('./schedule')(sequelize, Sequelize);
-db.Intake = require('./intake')(sequelize, Sequelize);
-db.Recommend = require('./recommend')(sequelize, Sequelize);
+db.User = require('./users')(sequelize, Sequelize);
+db.Medicine = require('./medicines')(sequelize, Sequelize);
+db.Schedule = require('./schedules')(sequelize, Sequelize);
+db.Intake = require('./intakes')(sequelize, Sequelize);
+db.Recommend = require('./recommends')(sequelize, Sequelize);
 
 db.User.belongsToMany(db.Medicine, {through: db.Schedule});
 db.Medicine.belongsToMany(db.User, {through: db.Medicine});

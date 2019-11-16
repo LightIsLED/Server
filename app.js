@@ -9,6 +9,7 @@ var userRouter = require("./routers/userRouter");
 var routes = require("./routers");
 var sessionParser = require("express-session");
 var {sequelize} = require('./models');
+var routers = require('./routers');
 
 var app = express();
 sequelize.sync();
