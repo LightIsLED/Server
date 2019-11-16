@@ -23,6 +23,7 @@ const routes =
 home: HOME,
 join: JOIN,
 calendar: CALENDAR,
+calendarDetail: CALENDAR_DETAIL,
 medication: MEDICATION,
 medicines: MEDICINES,
 addForm: ADDITIONFORM,
