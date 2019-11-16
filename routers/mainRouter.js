@@ -34,11 +34,11 @@ router.post(routes.join, async (req, res) => {
             userName: name,
             birth: birthDay,
             sex: sex
-        }, ['userId','birth','sex']);
-        const userId = await User.findOne({attributes: ['userId'], where: {userName: name, birth: birthDay}});
+        });
+        const userId = await User.findOne({attributes: ['userId'], where: {userName: name}});
         req.session.user = {
-            id: userId
-        }
+            id: userId['dataValues']['userId']
+        };
         res.redirect(routes.calendar);
     }catch(error){
         console.error(error);
