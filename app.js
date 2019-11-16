@@ -3,9 +3,11 @@ var morgan = require("morgan");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-
 var mainRouter = require("./routers/mainRouter");
-var medicineRouter = require("./routers/medicineRouter")
+var medicineRouter = require("./routers/medicineRouter");
+var userRouter = require("./routers/userRouter");
+var routes = require("./routers");
+var sessionParser = require("express-session");
 var {sequelize} = require('./models');
 var routers = require('./routers');
 
@@ -18,10 +20,16 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan("dev"));
+app.use(sessionParser({
+    secret: "Mediger",
+    resave: true,
+    saveUninitialized: true
+}));
 
 
-app.use(routers.home, mainRouter);
-app.use(routers.medicines, medicineRouter)
+app.use(routes.home, mainRouter);
+app.use(routes.medicines, medicineRouter);
+app.use(routes.user, userRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
