@@ -53,4 +53,17 @@ router.get(routes.calendar, (req, res, next) => {
     });
 });
 
+router.get(routers.medicines, (req, res) => {
+    res.render('mediList', {
+
+    });
+});
+
+router.get(routers.addForm, (req, res) => {
+    res.render('addForm', {
+        title: 'Mediger-MediInput', 
+        user: null,
+    });
+})
+
 module.exports = router; 
