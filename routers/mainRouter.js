@@ -29,13 +29,14 @@ router.get(routes.join, (req,res) =>{
 
 router.post(routes.join, async (req, res) => {
     const {name, birthDay, sex} = req.body;
+    const birthDate = new Date(birthDay);
     try{
         await User.create({
             userName: name,
             birth: birthDay,
             sex: sex
         });
-        const userId = await User.findOne({attributes: ['userId'], where: {userName: name}});
+        const userId = await User.findOne({attributes: ['userId'], where: {userName: name, birth: birthDate}});
         req.session.user = {
             id: userId['dataValues']['userId']
         };
