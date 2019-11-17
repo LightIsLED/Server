@@ -1,3 +1,5 @@
+const { calendarDetail, alarmDetail, alarmRecord } = require("../controllers/calendarController");
+
 const express = require("express");
 const router = express.Router();
 

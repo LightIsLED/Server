@@ -1,4 +1,12 @@
 doctype html
-body
-    p
-        | medilist
+html
+    head
+        meta(charset='utf-8')
+        script.
+            function movePage(){
+                window.location.href = "/medicines/addForm";
+            }
+    body
+        div
+            form
+                input(type="button", value="등록", onclick="movePage()")

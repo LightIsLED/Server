@@ -1,10 +1,10 @@
-const userProfile = (req, res) => {
+const userDetail = (req, res) => {
     res.render("profile");
 };
 
 const userUpdate = (req, res) => {};
 
 module.exports = {
-    userProfile,
+    userDetail,
     userUpdate
 };

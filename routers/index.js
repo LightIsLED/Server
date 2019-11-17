@@ -2,7 +2,7 @@ const express = require("express");
 const authRouter = require("./authRouter");
 const calendarRouter = require("./calendarRouter");
 const userRouter = require("./userRouter");
-const mediRouter = require("./mediRouter");
+const medicineRouter = require("./medicineRouter");
 
 const router = express.Router();
 
@@ -12,6 +12,6 @@ const router = express.Router();
 //router.use("/auth", authRouter);
 //router.use("/calendar", calendarRouter);
 //router.use("/users", userRouter);
-//router.use("/medicines", mediRouter);
+//router.use("/medicines", medicineRouter);
 
 module.exports = router;

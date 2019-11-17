@@ -3,13 +3,15 @@ var morgan = require("morgan");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-var mainRouter = require("./routers/mainRouter");
-var medicineRouter = require("./routers/medicineRouter");
-var userRouter = require("./routers/userRouter");
-var routes = require("./routers");
 var sessionParser = require("express-session");
+
+var indexRouter = require('./routers/index')
+var authRouter = require("./routers/authRouter");
+var userRouter = require("./routers/userRouter");
+var calendarRouter = require("./routers/calendarRouter");
+var medicineRouter = require("./routers/medicineRouter");
+
 var {sequelize} = require('./models');
-var routers = require('./routers');
 
 var app = express();
 sequelize.sync();
@@ -26,10 +28,11 @@ app.use(sessionParser({
     saveUninitialized: true
 }));
 
-
-app.use(routes.home, mainRouter);
-app.use(routes.medicines, medicineRouter);
-app.use(routes.user, userRouter);
+app.use('/', indexRouter);
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/calendar', calendarRouter);
+app.use('/medicines', medicineRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
