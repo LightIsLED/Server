@@ -1,5 +1,6 @@
 doctype HTML
 - var date = new Date().getDate();
+- var dateUrl = `/calendar/${userDate}/`;
 head
     title #{title}
 body
@@ -9,7 +10,10 @@ body
         a(href="/calendar/"+`${date}`) #{date}
         a(href="/calendar/"+`${date+1}`) #{date+1}
         a(href="/calendar/"+`${date+2}`) #{date+2}
-
+    p #{alarmList}
+    //- 중첩 array를 pug에서 처리하는 법 못 찾음. 나중에 그냥 array로 해볼예정
     div
-        p #{alarmList}
+        a(href=dateUrl+"3") sasa
+
+    
     include footer.pug
