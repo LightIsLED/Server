@@ -1,5 +1,15 @@
 doctype HTML
+- var date = new Date().getDate();
 head
     title #{title}
 body
-    h1 calendar - Mediger
+    div
+        a(href="/calendar/"+`${date-2}`) #{date-2}
+        a(href="/calendar/"+`${date-1}`) #{date-1}
+        a(href="/calendar/"+`${date}`) #{date}
+        a(href="/calendar/"+`${date+1}`) #{date+1}
+        a(href="/calendar/"+`${date+2}`) #{date+2}
+
+    div
+        p #{alarmList}
+    include footer.pug
