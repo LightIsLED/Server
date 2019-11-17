@@ -53,13 +53,13 @@ router.get(routes.calendar, (req, res, next) => {
     });
 });
 
-router.get(routers.medicines, (req, res) => {
+router.get(router.medicines, (req, res) => {
     res.render('mediList', {
 
     });
 });
 
-router.get(routers.addForm, (req, res) => {
+router.get(router.addForm, (req, res) => {
     res.render('addForm', {
         title: 'Mediger-MediInput', 
         user: null,
