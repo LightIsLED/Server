@@ -5,46 +5,40 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var sessionParser = require("express-session");
 
-var indexRouter = require('./routers/index')
-var authRouter = require("./routers/authRouter");
-var userRouter = require("./routers/userRouter");
-var calendarRouter = require("./routers/calendarRouter");
-var medicineRouter = require("./routers/medicineRouter");
+var indexRouter = require("./routers/index");
 
-var {sequelize} = require('./models');
+var { sequelize } = require("./models");
 
 var app = express();
 sequelize.sync();
 
-app.set('views', path.join(__dirname, 'views'));
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(sessionParser({
-    secret: "Mediger",
-    resave: true,
-    saveUninitialized: true
-}));
+app.use(
+    sessionParser({
+        secret: "Mediger",
+        resave: true,
+        saveUninitialized: true
+    })
+);
 
-app.use('/', indexRouter);
-app.use('/auth', authRouter);
-app.use('/users', userRouter);
-app.use('/calendar', calendarRouter);
-app.use('/medicines', medicineRouter);
+app.use("", indexRouter);
 
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+    const err = new Error("Not Found");
     err.status = 404;
     next(err);
 });
 
 app.use((err, req, res) => {
     res.locals.message = err.mesage;
-    res.locals.error = req.app.get('env') || 'development' ? err : {};
+    res.locals.error = req.app.get("env") || "development" ? err : {};
     res.status(err.status || 500);
-    res.render('error');
+    res.render("error");
 });
 
 module.exports = app;
