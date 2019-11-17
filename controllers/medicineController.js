@@ -1,19 +1,21 @@
 const { Schedule, Medicine, User } = require("../models");
 
 const medicineList = (req, res, next) => {
-    res.render("mediList", {
+    res.render("medicineList", {
         title: "Mediger-Main",
         user: null
     });
 };
-
-const medicineDetail = (req, res) => {};
 
 const addForm = (req, res, next) => {
     res.render("addForm", {
         title: "Mediger-AddAlarm",
         user: null,
     });
+};
+
+const medicineDetail = (req, res) => {
+    res.render("medicineDetail");
 };
 
 const insertSchedule = async (req, res, next) => {
@@ -66,7 +68,7 @@ const insertSchedule = async (req, res, next) => {
                 break;
             }
         }
-        res.render('/medicines');
+        res.redirect('/medicines');
     } catch (error) {
         console.error(error);
         next(error);
@@ -104,8 +106,8 @@ function mediSelect(medicine, dose, mediCount){
 
 module.exports = {
     medicineList,
-    medicineDetail,
     addForm,
+    medicineDetail,
     insertSchedule,
     updateMedicine,
     deleteMedicine
