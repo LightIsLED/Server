@@ -19,7 +19,6 @@
         - 약물 리스트 & 복용량 리스트: `mediName` & `dose`
         - 알람 시간 리스트: `time`
     - 약 입력 과정
-        - submit을 누르면 `/addForm/insert`로 감.
-        - 약물은 `findOrCreate`로, Medicines 테이블에 있는 약이면 select, 없는 약이면 insert한 후 해당 약물 정보 `return`
+        - submit을 누르면 `/medicines/insert`로, Medicines 테이블에 있는 약이면 select, 없는 약이면 insert한 후 해당 약물 정보 `return`
         - `return`된 약물 ID를 바탕으로 Schedules 테이블에 사용자가 입력한 정보를 insert
         - _약물 입력 과정에서 정의한 기타 함수들은, 시간 또는 약이 하나일 때와 여러개일 때 변수 type이 달라져 정의한 함수들임. 주요 로직 해당 X_

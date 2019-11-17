@@ -1,9 +1,24 @@
 const { Schedule, Medicine, User } = require("../models");
 
-const medicineList = (req, res, next) => {
-    res.render("medicineList", {
-        title: "Mediger-Main",
-        user: null
+const medicineList = async (req, res, next) => {
+    await Schedule.findAll({
+        where: {userID: User.userID},
+        include: {
+            model: Medicine.medicineName,
+        },
+        group: 'createdAt',
+        order: [['createdAt', 'DESC']]
+    })
+    .then((schedule) => {
+        res.render("medicineList", {
+            title: "Mediger-Main",
+            user: req.session.user.userID,
+            schedules: schedule,
+        });
+    })
+    .catch((error) => {
+        console.error(error);
+        next(error);
     });
 };
 
