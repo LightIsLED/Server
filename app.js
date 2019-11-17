@@ -4,9 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var sessionParser = require("express-session");
-
 var indexRouter = require("./routers/index");
-
 var { sequelize } = require("./models");
 
 var app = express();
@@ -25,15 +23,12 @@ app.use(
         saveUninitialized: true
     })
 );
-
 app.use("", indexRouter);
-
 app.use((req, res, next) => {
     const err = new Error("Not Found");
     err.status = 404;
     next(err);
 });
-
 app.use((err, req, res) => {
     res.locals.message = err.mesage;
     res.locals.error = req.app.get("env") || "development" ? err : {};

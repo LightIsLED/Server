@@ -8,8 +8,10 @@
 
 - SignUp (명지)
     - express-session 설치 필요
-    - home 으로 가면 user 정보 확인 후 없으면 join 페이지 있으면 메인페이지로 넘어감. 
+    - home("/")에서 user 정보 확인
+    - 없으면 join 페이지로 있으면 calendar 페이지로 넘어감. 
     - 서버 연결 닫히면 다시 정보 넣어야 함.
+    - 변수 이름 :  `userID`
 
 - 알람 등록 (예원)
     - 변수 이름
