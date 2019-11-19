@@ -15,22 +15,19 @@ db.Medicine = require('./medicines')(sequelize, Sequelize);
 db.Schedule = require('./schedules')(sequelize, Sequelize);
 db.Intake = require('./intakes')(sequelize, Sequelize);
 db.Recommend = require('./recommends')(sequelize, Sequelize);
+db.MediSchedule = require('./mediSchedules')(sequelize, Sequelize);
 
-db.User.hasMany(db.Schedule);
-db.Schedule.belongsTo(db.User);
+//db.User.hasMany(db.Schedule);
+db.Schedule.belongsTo(db.User, {foreignKey: 'userID'});
 
-db.User.hasMany(db.Intake);
-db.Intake.belongsTo(db.User);
+//db.Schedule.hasOne(db.Intake);
+db.Intake.belongsTo(db.Schedule, {foreignKey: 'scheID'});
 
-db.Schedule.hasOne(db.Intake);
-db.Intake.belongsTo(db.Schedule);
+//db.Medicine.hasMany(db.MediSchedule);
+db.MediSchedule.belongsTo(db.Medicine, {foreignKey: 'medicineID'});
 
-db.Medicine.belongsToMany(db.Schedule, {
-  through: 'MediSchedules',
-});
-db.Schedule.belongsToMany(db.Medicine,{
-  through: 'MediSchedules',
-});
+//db.Schedule.hasOne(db.MediSchedule);
+db.MediSchedule.belongsTo(db.Schedule, {foreignKey: 'scheID'});
 
 db.Medicine.belongsToMany(db.Medicine, {
   foreignKey: 'recoMediID',
