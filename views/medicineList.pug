@@ -4,10 +4,5 @@ html
         meta(charset='utf-8')
         script.
     body
-        .schedules
-            for schedule in schedules
-                .schedule
-                    input.schedule-id(type='hidden' value=schedule.scheID)
-                    
-            form(action='/medicines/addForm' method='GET')
-                input(type="submit", value="추가")
+        form(action='/medicines/addForm' method='GET')
+            input(type="submit", value="추가")
