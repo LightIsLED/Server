@@ -26,6 +26,16 @@
         - `return`된 약물 ID를 바탕으로 Schedules 테이블에 사용자가 입력한 정보를 insert
         - _약물 입력 과정에서 정의한 기타 함수들은, 시간 또는 약이 하나일 때와 여러개일 때 변수 type이 달라져 정의한 함수들임. 주요 로직 해당 X_
 
-- 동일한 Template (명지)
+- 공동 Template (명지)
     - footer.pug : `a href` 이용해 클릭할 경우 각 페이지(`/calendar`, `/medicines`, `/user`)로 넘어갈 수 있도록 함.   
     - footer.pug 사용 방법: pug 파일에서 필요한 부분에 `include footer.pug` 입력 
+
+- 알람 리스트 (명지)
+    - 변수 이름
+        - 선택한 날짜: `userDate`
+        - 알람 리스트: `alarmList` - 알람이름, 알람 시간, 분, 알람 아이디 담고 있는 중첩 리스트임. [["name hour:min",id],["name hour:min",id],...]
+    - 과정
+        - `calendar` 페이지에서 `date` 선택
+        - `date`는 `req.params`에 담겨서 넘어옴.
+        - `date`, `userID` 이용해서 알람 리스트 찾음
+        - 알람 리스트는 `calendar/:date`페이지에 표시됨 

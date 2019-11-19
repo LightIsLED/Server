@@ -8,7 +8,6 @@ const calendarDetail =  async (req, res) => {
         const today = new Date();
         const dateString = String(today.getFullYear())+"-"+String(today.getMonth()+1)+"-"+req.params.date;
         const date = new Date(dateString);
-        const alarmInfo = [];
         const alarmList = await Schedule.findAll({
             where: {
                 userID: req.session.user.userID,
@@ -16,15 +15,19 @@ const calendarDetail =  async (req, res) => {
                 endDate: {[Op.gte]: date}
             },
             attributes: ["scheID","scheName","dose","scheHour","scheMin"]
+        }).then(result =>{
+            const alarmInfo = [];
+            for (let schedule of result)
+            {
+                var scheInfo = schedule.dataValues.scheName+" "+schedule.dataValues.scheHour+":"+schedule.dataValues.scheMin;
+                alarmInfo.push([scheInfo,schedule.dataValues.scheID])
+            }
+            return(alarmInfo);
         });
-        for (let schedule of alarmList)
-        {
-            var scheInfo = schedule.dataValues.scheName+" "+schedule.dataValues.scheHour+":"+schedule.dataValues.scheMin;
-            alarmInfo.push([scheInfo,schedule.dataValues.scheID])
-        }
+        console.log(alarmList);
         res.render("calendar",{
         userDate: req.params.date,
-        alarmList: alarmInfo
+        alarmList: alarmList
         });
     }catch(error){
         console.error(error);
