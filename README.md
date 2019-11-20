@@ -37,5 +37,8 @@
     - 과정
         - `calendar` 페이지에서 `date` 선택
         - `date`는 `req.params`에 담겨서 넘어옴.
-        - `date`, `userID` 이용해서 알람 리스트 찾음
-        - 알람 리스트는 `calendar/:date`페이지에 표시됨 
+        - `date`, `userID` 이용해서 알람 리스트 찾음.
+        - 알람 리스트는 `calendar/:date`페이지에 표시됨.
+
+- 알람 기능(명지)
+    
