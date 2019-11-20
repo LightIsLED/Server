@@ -1,5 +1,14 @@
 doctype html
+- var date = new Date();
+- var today = String(date.getMonth()+1)+"/"+String(date.getDate());
 body
-    h1 Alarm
-    p date and hour : minute
-    p button - no, yet, yes
+    div
+        h1 #{alarmName}
+        p #{today} #{alarmTime}
+    div
+        p #{medicineList}
+
+    div
+        form(action="/calendar/"+`${selectedDate}`+"/"+`${id}`, method="post")
+            input(type="text", name="check")
+            input(type="submit" value="Submit")
