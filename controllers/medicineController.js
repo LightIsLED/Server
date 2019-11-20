@@ -1,9 +1,23 @@
-const { Schedule, Medicine, User } = require("../models");
+const { Schedule, Medicine, MediSchedule } = require("../models");
 
-const medicineList = (req, res, next) => {
-    res.render("medicineList", {
-        title: "Mediger-Main",
-        user: null
+const medicineList = async (req, res, next) => {    
+    await Schedule.findAll({
+        where: {userID: 1},
+    }).then((schedule) => { 
+        MediSchedule.findAll({
+            where: {scheID: schedule.dataValues.scheID},
+        }).then((mediSchedule) => {
+            console.log(mediSchedule);
+            res.render("medicineList", {
+                title: "Mediger-Main",
+                user: 1,
+                schedules: mediSchedule,
+        });
+        });
+    })
+    .catch((error) => {
+        console.error(error);
+        next(error);
     });
 };
 
@@ -28,6 +42,15 @@ const insertSchedule = async (req, res, next) => {
             let time = timeSplit(req.body.time, timeCount);
             let mediCount = 0;
             console.log("hour: ", time[0], " minute: ", time[1]);
+            let schedule = await Schedule.create({
+                userID: 1,
+                scheName: req.body.scheName,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                scheHour: time[0],
+                scheMin: time[1]
+            });
+            console.log("scheID", schedule["dataValues"]["scheID"]);
             //loop for medicine
             while (1) {
                 //focus medicine과 dose를 담는 object
@@ -35,20 +58,19 @@ const insertSchedule = async (req, res, next) => {
                 //medicine 이름이 DB에 있으면 select, 없으면 insert
                 await Medicine.findOrCreate({
                     where: { medicineName: tempMedi.medicine },
-                    defaults: { dose: tempMedi.dose },
-                    attributes: ["medicineID"]
-                }).spread(medicine => {
-                    Schedule.create({
-                        userID: 1,
+                    attributes: ["medicineID", "medicineName"]
+                }).spread( async(medicine) => {
+                    MediSchedule.create({
                         medicineID: medicine.dataValues.medicineID,
+                        scheID: schedule["dataValues"]["scheID"],
                         dose: tempMedi.dose,
-                        scheName: req.body.scheName,
-                        startDate: req.body.startDate,
-                        endDate: req.body.endDate,
-                        scheHour: time[0],
-                        scheMin: time[1]
+                        medicineName: medicine.dataValues.medicineName,
                     });
+                }).catch((error) => {
+                    console.error(error);
+                    next(error);
                 });
+                ;
 
                 mediCount = mediCount + 1;
                 if (
