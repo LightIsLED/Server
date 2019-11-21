@@ -3,11 +3,9 @@ const { calendar, calendarDetail, alarmDetail, alarmRecord } = require("../contr
 const express = require("express");
 const router = express.Router();
 
-// "/{date}" 부분에 대한 고민 필요
-// 지원 생각 : {date} 없애고 date을 그냥 get의 params로 전해주는 방법도 있을 듯!
-router.get("", calendar);
-router.get("/{date}", calendarDetail); //해당일 복약 일정 전체 보기
-router.get("/{date}/:id/alarm", alarmDetail); //해당일 개별 약 알람 보기 -> id = 약id
-router.post("/{date}/:id/alarm", alarmRecord); //해당일 개별 약 알람 기록 : 건너뜀/재알람/먹음 -> id = 약id
+router.get("", calendar);//기본 캘린더 페이지
+router.get("/:date", calendarDetail); //해당 일자에 해당하는 알람 리스트 보여줌. req.params.date로 처리
+router.get("/:date/:id", alarmDetail); //해당일 개별 알람에 대한 복용 여부 페이지 보여줌. id는 알람 id
+router.post("/:date/:id", alarmRecord); //해당일 개별 알람에 대한 복용 여부 저장. id는 알람 id
 
 module.exports = router;
