@@ -1,22 +1,31 @@
+const Sequelize = require('sequelize');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config')[env];
+const sequelize = new Sequelize(
+    config.database, config.username, config.password, config,
+);
+
+const groupBy = require('group-by');
+
 const { Schedule, Medicine, MediSchedule } = require("../models");
 
-const medicineList = async (req, res, next) => {    
-    await Schedule.findAll({
-        where: {userID: 1},
-    }).then((schedule) => { 
-        MediSchedule.findAll({
-            where: {scheID: schedule.dataValues.scheID},
-        }).then((mediSchedule) => {
-            console.log(mediSchedule);
-            res.render("medicineList", {
-                title: "Mediger-Main",
-                user: 1,
-                schedules: mediSchedule,
-        });
+const medicineList = async (req, res, next) => {
+    var query = "SELECT MEDISCHEDULES.scheID, SCHEDULES.scheName, SCHEDULES.scheHour, SCHEDULES.scheMin, MEDISCHEDULES.medicineName, MEDISCHEDULES.dose FROM MEDISCHEDULES INNER JOIN SCHEDULES ON MEDISCHEDULES.scheID=SCHEDULES.scheID WHERE MEDISCHEDULES.scheID IN (SELECT scheID FROM SCHEDULES WHERE userID=:userID) ORDER BY MEDISCHEDULES.scheID DESC";
+
+    await sequelize.query(query, 
+        {replacements: {userID: req.session.user.userID}, type: Sequelize.QueryTypes.SELECT}
+    )
+    .then((schedules) => {
+        var grouped = groupBy(schedules, 'scheID');
+        console.log(grouped);
+        res.render("medicineList", {
+            title: "Mediger-Main",
+            user: req.session.user.userID,
+            schedules: grouped,
         });
     })
     .catch((error) => {
-        console.error(error);
+        console.log(error);
         next(error);
     });
 };
@@ -43,7 +52,7 @@ const insertSchedule = async (req, res, next) => {
             let mediCount = 0;
             console.log("hour: ", time[0], " minute: ", time[1]);
             let schedule = await Schedule.create({
-                userID: 1,
+                userID: req.session.user.userID,
                 scheName: req.body.scheName,
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
