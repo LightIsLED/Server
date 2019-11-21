@@ -61,3 +61,31 @@
         - submit을 누르면 `/medicines/insert`로, Medicines 테이블에 있는 약이면 select, 없는 약이면 insert한 후 해당 약물 정보 `return`
         - `return`된 약물 ID를 바탕으로 Schedules 테이블에 사용자가 입력한 정보를 insert
         - _약물 입력 과정에서 정의한 기타 함수들은, 시간 또는 약이 하나일 때와 여러개일 때 변수 type이 달라져 정의한 함수들임. 주요 로직 해당 X_
+
+- 공동 Template (명지)
+    - footer.pug : `a href` 이용해 클릭할 경우 각 페이지(`/calendar`, `/medicines`, `/user`)로 넘어갈 수 있도록 함.   
+    - footer.pug 사용 방법: pug 파일에서 필요한 부분에 `include footer.pug` 입력 
+
+- 캘린더 페이지 (명지)
+    - 변수 이름
+        - 선택한 날짜: `userDate`
+        - 알람 리스트: `alarmList` - 알람이름, 알람 시간, 분 담고 있는 리스트임. [name, hour, min...]
+        - 알람 아이디: `alarmID` - 알람 아이디 담고 있는 리스트
+        - 색깔: `color` - 복용 여부 색 이름 담고 있는 리스트로 알람 아이디랑 같은 순서임. 복용 한 알람 - `green`, 복용 안한 알람 - `gray`
+    - 과정
+        - `calendar` 페이지에서 `date` 선택
+        - `date`와 `userID`에 맞는 알람 이름, 알람 시간(시:분) 표시됨, 여기선 일단 알람 아이디까지 표시됨.
+        - `scheID`와 `date`을 기준으로 복용 여부 확인 후 색깔 표시.
+        - 알람 리스트는 `calendar/:date`페이지에 표시됨.
+- `Alarm Detail` 페이지 (명지)
+    - 변수 이름
+        - 알람 이름: `alarmName`
+        - 알람 시간: `alarmTime`
+        - 약 리스트: `medicineList`
+    - 과정 
+        - 특정 알람을 선택해 페이지에 들어오면 `scheID`를 기준으로 `alarmName`,`alarmTime`을 찾아서 표시.
+        - 또한 `scheID`를 기준으로 `medicineName` 찾아서 표시
+        - `date`와 `id`도 넘겨줌.
+        - text입력창에 `green`(복용완료) 또는 `gray`(미복용, 건너뜀) 입력 시
+        - 복용한 경우 데이터베이스에 저장, 아닐 경우 저장하지 않음
+        - 이 후  `/calendar/:date`페이지로 다시 돌아감.
