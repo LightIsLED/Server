@@ -15,12 +15,12 @@ html
                     .time
                     ul
                     if(count==0)
-                        li= 'scheName: ' + time.scheName
-                        li= time.scheHour + " : " + time.scheMin
+                        li= '알람이름: ' + time.scheName
+                        li= '알람시간: ' +time.scheHour + " : " + time.scheMin
                     - count = count+1
                         ul
-                            li= 'medicineName: ' + time.medicineName
-                            li= 'dose: ' + time.dose
+                            li= '약이름: ' + time.medicineName
+                            li= '복용량: ' + time.dose
         .add
             form(action='/medicines/addForm' method='GET')
                 input.user(type='hidden', value=user)

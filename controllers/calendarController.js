@@ -1,106 +1,81 @@
-const {Schedule,MediSchedule, Intake} = require("../models");
-const {Op} = require("sequelize");
+const Sequelize = require('sequelize');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config')[env];
+const sequelize = new Sequelize(
+    config.database, config.username, config.password, config,
+);
 
-const calendar = (req, res) => {res.render("calendar");};
+const {Schedule} = require("../models");
+
+const moment = require('moment');
+
+const calendar = (req, res) => {
+    res.render("calendar",{
+    userDate: null,
+    schedules: null,
+    });
+}
+
 const calendarDetail =  async (req, res) => {
-    try{
-        req.session.user.userID = 1; //테스트를 위한 설정. userID 고정해두고 테스트하길 권장
-        const today = new Date();
-        console.log(today);
-        const dateString = String(today.getFullYear())+"-"+String(today.getMonth()+1)+"-"+req.params.date;
-        const dateString1 = String(today.getFullYear())+"-"+String(today.getMonth()+1)+"-"+String(parseInt(req.params.date)+1);
-        const date = new Date(dateString);
-        const date1 = new Date(dateString1);
-        const alarmList =[];
-        const alarmID = [];
-        const color = [];
-        await Schedule.findAll({
-            where: {
-                userID: req.session.user.userID,
-                startDate: {[Op.lte]: date},
-                endDate: {[Op.gte]: date}
-            },
-            attributes: ["scheID","scheName","scheHour","scheMin"]
-        }).then(result =>{
-            for (let schedule of result)
-            {
-                alarmID.push(schedule.dataValues.scheID);
-                alarmList.push(schedule.dataValues.scheName);
-                alarmList.push(schedule.dataValues.scheHour);
-                alarmList.push(schedule.dataValues.scheMin);
-            }
-        });
-        for(let item of alarmID)
-        {
-            const check = await Intake.findOne({
-                where:{
-                    scheID: item,
-                    intakeTime: {[Op.gte]: date, [Op.lt]: date1} 
-                }
-            });
-            if(check)
-            {
-                color.push("green");
-            }
-            else
-            {
-                color.push("gray");
-            }
-        }
+    let dateString=moment().format('YYYY-MM-DD');
+    if(req.params.date<0){
+        var value = Math.abs(req.params.date);
+        dateString = moment().subtract(value, 'd');
+    }
+    else if (req.params.date>0){
+        dateString = moment().add(req.params.date, 'd');
+    }
+    console.log(dateString);
+    await Schedule.findAll({
+        where: {
+            userID: req.session.user.userID,
+            scheDate: Date.parse(dateString),
+        },
+        attributes: ["scheID","scheName","scheHour","scheMin", "scheDate", "intake"]
+    }).then((schedule) => {
+        console.log(schedule);
         res.render("calendar",{
-        userDate: req.params.date,
-        alarmList: alarmList,
-        alarmID: alarmID,
-        color: color
-        });
-    }catch(error){
-        console.error(error);
-        return next(error);
-    }
-};
-const alarmDetail = async (req, res) => {
-    try{
-        const medicineList = [];
-        const alarmName = await Schedule.findOne({
-            where : {scheID: req.params.id},
-            attributes: ["scheName","scheHour","scheMin"]
-        });
-        await MediSchedule.findAll({
-            where:{scheID: req.params.id},
-            attributes: ["medicineName"]
-        }).then(result => {
-            for(let mediSchedule of result)
-            {
-                medicineList.push(mediSchedule.dataValues.medicineName);
-            }
-        });
-        res.render("alarmDetail",{
-            alarmName: alarmName.dataValues.scheName,
-            alarmTime: String(alarmName.dataValues.scheHour)+":"+String(alarmName.dataValues.scheMin),
-            medicineList: medicineList,
-            selectedDate: req.params.date,
-            id: req.params.id
-        });        
-    }catch(error){
-        console.error(error);
-        return next(error);
-    }
-};
-const alarmRecord =  async (req, res) => {
-    const {check} = req.body;
-    try{
-        if(check === "green")
-        {
-            Intake.create({
-                scheID: req.params.id
+            userDate: req.params.date,
+            schedules: schedule,
             });
-        }
-        res.redirect("/calendar/"+req.params.date);
-    }catch(error){
+    }).catch((error) => {
         console.error(error);
-        return next(error);
-    }
-};
+        next(error);    
+    });
+}   
+
+const alarmDetail = async (req, res) => {
+    var query="" + 
+    "SELECT SCHEDULES.scheID, SCHEDULES.scheName, SCHEDULES.scheHour, SCHEDULES.scheMin, SCHEDULES.intake, SCHEDULES.scheDate, MEDISCHEDULES.medicineName, MEDISCHEDULES.dose " + 
+    "FROM SCHEDULES JOIN MEDISCHEDULES ON SCHEDULES.scheID=MEDISCHEDULES.scheID " + 
+    "WHERE SCHEDULES.scheID=:scheID";
+
+    await sequelize.query(query, 
+        {replacements: {scheID: req.params.scheID}, type: Sequelize.QueryTypes.SELECT}
+    ).then((alarm) => {
+        console.log(alarm);
+        res.render("alarmDetail", {
+            alarms: alarm
+        });
+    }).catch((error) => {
+        console.error(error);
+        next(error);
+    });
+}
+
+const alarmRecord =  async (req, res) => {
+    await Schedule.update({intake: true},{
+        where: {
+            scheID : req.body.scheID
+        }
+    }).then((schedule)=> {
+        console.log(schedule);
+        res.redirect("/calendar/"+req.params.date);
+    }).catch(error=>{
+        console.error(error);
+        next(error);
+    })
+}
 
 module.exports = {
     calendar,

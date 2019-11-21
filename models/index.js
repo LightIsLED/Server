@@ -13,15 +13,11 @@ db.Sequelize = Sequelize;
 db.User = require('./users')(sequelize, Sequelize);
 db.Medicine = require('./medicines')(sequelize, Sequelize);
 db.Schedule = require('./schedules')(sequelize, Sequelize);
-db.Intake = require('./intakes')(sequelize, Sequelize);
 db.Recommend = require('./recommends')(sequelize, Sequelize);
 db.MediSchedule = require('./mediSchedules')(sequelize, Sequelize);
 
 //db.User.hasMany(db.Schedule);
 db.Schedule.belongsTo(db.User, {foreignKey: 'userID'});
-
-//db.Schedule.hasOne(db.Intake);
-db.Intake.belongsTo(db.Schedule, {foreignKey: 'scheID'});
 
 //db.Medicine.hasMany(db.MediSchedule);
 db.MediSchedule.belongsTo(db.Medicine, {foreignKey: 'medicineID'});
