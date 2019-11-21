@@ -2,17 +2,28 @@ doctype html
 html
     head
         meta(charset='utf-8')
-        script.
+        style.
+            ul{
+                list-style:none;
+            }
     body
         .schedules
             for schedule in schedules
+                - count = 0;
                 .schedule
-                    .sche-name= 'scheName: ' + schedule.scheName
-                    .sche-time= schedule.scheHour + " : " + schedule.scheMin
-                    .medicine-name= 'medicineName: ' + schedule.medicineName
-                    .dose= 'dose: ' + schedule.dose
-                    br            
-
-        form(action='/medicines/addForm' method='GET')
-            input.user(type='hidden', value=user)
-            input(type="submit", value="추가")
+                for time in schedule
+                    .time
+                    ul
+                    if(count==0)
+                        li= 'scheName: ' + time.scheName
+                        li= time.scheHour + " : " + time.scheMin
+                    - count = count+1
+                        ul
+                            li= 'medicineName: ' + time.medicineName
+                            li= 'dose: ' + time.dose
+        .add
+            form(action='/medicines/addForm' method='GET')
+                input.user(type='hidden', value=user)
+                input(type="submit", value="추가")
+        .footer
+            include footer.pug

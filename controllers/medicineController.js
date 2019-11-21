@@ -4,21 +4,24 @@ const config = require('../config/config')[env];
 const sequelize = new Sequelize(
     config.database, config.username, config.password, config,
 );
-const Op = Sequelize.Op;
+
+const groupBy = require('group-by');
+
 const { Schedule, Medicine, MediSchedule } = require("../models");
 
 const medicineList = async (req, res, next) => {
-    var query = "SELECT MEDISCHEDULES.scheID, SCHEDULES.scheName, SCHEDULES.scheHour, SCHEDULES.scheMin, MEDISCHEDULES.medicineName, MEDISCHEDULES.dose FROM MEDISCHEDULES INNER JOIN SCHEDULES ON MEDISCHEDULES.scheID=SCHEDULES.scheID WHERE MEDISCHEDULES.scheID IN (SELECT scheID FROM SCHEDULES WHERE userID=:userID) ORDER BY MEDISCHEDULES.scheID";
+    var query = "SELECT MEDISCHEDULES.scheID, SCHEDULES.scheName, SCHEDULES.scheHour, SCHEDULES.scheMin, MEDISCHEDULES.medicineName, MEDISCHEDULES.dose FROM MEDISCHEDULES INNER JOIN SCHEDULES ON MEDISCHEDULES.scheID=SCHEDULES.scheID WHERE MEDISCHEDULES.scheID IN (SELECT scheID FROM SCHEDULES WHERE userID=:userID) ORDER BY MEDISCHEDULES.scheID DESC";
 
     await sequelize.query(query, 
         {replacements: {userID: req.session.user.userID}, type: Sequelize.QueryTypes.SELECT}
     )
     .then((schedules) => {
-        console.log(schedules);
+        var grouped = groupBy(schedules, 'scheID');
+        console.log(grouped);
         res.render("medicineList", {
             title: "Mediger-Main",
             user: req.session.user.userID,
-            schedules: schedules,
+            schedules: grouped,
         });
     })
     .catch((error) => {
