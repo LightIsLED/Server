@@ -18,7 +18,6 @@ const getJoin = (req, res) => {
 
 const postJoin = async (req, res) => {
     const { name, birthDay, sex } = req.body;
-    const birthDate = new Date(birthDay);
     try {
         await User.create({
             userName: name,
