@@ -4,5 +4,15 @@ html
         meta(charset='utf-8')
         script.
     body
+        .schedules
+            for schedule in schedules
+                .schedule
+                    .sche-name= 'scheName: ' + schedule.scheName
+                    .sche-time= schedule.scheHour + " : " + schedule.scheMin
+                    .medicine-name= 'medicineName: ' + schedule.medicineName
+                    .dose= 'dose: ' + schedule.dose
+                    br            
+
         form(action='/medicines/addForm' method='GET')
+            input.user(type='hidden', value=user)
             input(type="submit", value="추가")
