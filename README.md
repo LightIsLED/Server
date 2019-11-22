@@ -37,7 +37,7 @@
         - _약물 입력 과정에서 정의한 기타 함수들은, 시간 또는 약이 하나일 때와 여러개일 때 변수 type이 달라져 정의한 함수들임. 주요 로직 해당 X_
     - `moment.js`설치 필요. (날짜 계산할 때 필요한 것). `npm i moment`
 
-- 공동 Template (명지)
+- 공동 Template (명지) 
     - footer.pug : `a href` 이용해 클릭할 경우 각 페이지(`/calendar`, `/medicines`, `/user`)로 넘어갈 수 있도록 함.   
     - footer.pug 사용 방법: pug 파일에서 필요한 부분에 `include footer.pug` 입력 
 
