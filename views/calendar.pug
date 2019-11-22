@@ -1,23 +1,36 @@
 doctype HTML
 html
 - var date = new Date().getDate();
-- var dateUrl = `/calendar/${userDate}/`;
     head
         title #{title}
     body
-        div
-            a(href="/calendar/"+`${date-2}`) #{date-2}
-            a(href="/calendar/"+`${date-1}`) #{date-1}
-            a(href="/calendar/"+`${date}`) #{date}
-            a(href="/calendar/"+`${date+1}`) #{date+1}
-            a(href="/calendar/"+`${date+2}`) #{date+2}
+        .calendar
+            a(href="/calendar/"+`${-2}`) #{date-2}
+            a(href="/calendar/"+`${-1}`) #{date-1}
+            a(href="/calendar/"+`${0}`) #{date}
+            a(href="/calendar/"+`${1}`) #{date+1}
+            a(href="/calendar/"+`${2}`) #{date+2}
         
-        p #{alarmList}
-        p #{alarmID}
-        p #{color} 
-        a(href=dateUrl+"1") aa 
+        .alarmList
+            if (schedules!=null)
+                for schedule in schedules
+                    li="알람 이름: " + schedule.scheName
+                    - time = schedule.scheHour + " : " + schedule.scheMin
+                    li="알람 시간: " + time
+                    li="알람 일자: " + schedule.scheDate
+                    if(schedule.intake===true)
+                        li="복용: " + "green"
+                    else
+                        li="미복용: " + "grey"
+                    a(href="/calendar/"+`${userDate}`+"/"+`${schedule.scheID}`+"") 상세 정보
+
+
+                
+        //- a(href=dateUrl+"1") aa 
         //- 자신이 설정해둔 데이터에 맞는 알람ID로 숫자 바꿀 것 ex) 1-> 3 뭐 이렇게 아님 안돌아감
         //- front 내가 만드는데 실패해서....ㅎ..
+        //-- var dateUrl = "calendar/"+`${userDate}`+"/"+`${schedule.scheID}`+"";
+
 
         
         include footer.pug
