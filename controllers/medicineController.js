@@ -43,7 +43,19 @@ const addForm = (req, res, next) => {
 };
 
 const medicineDetail = (req, res) => {
-    res.render("medicineDetail");
+    var query="" + 
+    "SELECT S.scheID, S.scheName, S.scheHour, S.scheMin, S.intake, S.scheDate, S.startDate, S.endDate, MEDISCHEDULES.medicineName, MEDISCHEDULES.dose " + 
+    "FROM SCHEDULES S JOIN MEDISCHEDULES ON SCHEDULES.scheID=MEDISCHEDULES.scheID " + 
+    "WHERE SCHEDULES.scheID=:scheID";
+
+    await sequelize.query(query, 
+        {replacements: {scheID: req.params.scheID}, type: Sequelize.QueryTypes.SELECT}
+    ).then((alarms) => {
+        res.render("medicineDetail", {
+            alarms: alarms,
+        });
+
+    })
 };
 
 const insertSchedule = async (req, res, next) => {
@@ -57,21 +69,24 @@ const insertSchedule = async (req, res, next) => {
             let time = timeSplit(req.body.time, timeCount);
             let startDate = new Date(req.body.startDate);
             let endDate = new Date(req.body.endDate);
+            let tempDate = new Date(startDate);
 
             if(startDate>endDate){
                 throw new Error("시작일이 종료일보다 큽니다.");
             }
 
-            while(startDate <= endDate){
+            while(tempDate <= endDate){
                 let schedule = await Schedule.create({
                     userID: req.session.user.userID,
                     scheName: req.body.scheName,
-                    scheDate: startDate,
+                    scheDate: tempDate,
                     scheHour: time[0],
-                    scheMin: time[1]
+                    scheMin: time[1],
+                    startDate: startDate,
+                    endDate: endDate
                 });
                 //Date를 다음 일자로 넘김.
-                startDate = moment(startDate).add(1, 'd');
+                tempDate = moment(tempDate).add(1, 'd');
 
                 let mediCount = 0;
                 //사용자가 알람에 등록한 약 갯수에 따라서 루프 돌아감

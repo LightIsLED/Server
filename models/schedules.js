@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(2),
             allowNull: false,
         },
+        startDate: {
+            type: DataTypes.Date,
+            allowNull: false,
+        },
+        endDate: {
+            type: DataTypes.Date,
+            allowNull: false,
+        },
         intake: {
             type: DataTypes.BOOLEAN, //복용했으면 1 안했으면 0
             allowNull: false,
