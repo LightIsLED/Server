@@ -1,6 +1,11 @@
 doctype html
 head
     title #{title}
+    script(src="/socket.io/socket.io.js")
+    script.
+        var socket = io().connect('http://localhost:2000',{
+                path: 'socket.io'
+        });
 body
     form(action="/join", method="post")
         div

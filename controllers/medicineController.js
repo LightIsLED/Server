@@ -42,7 +42,7 @@ const addForm = (req, res, next) => {
     });
 };
 
-const medicineDetail = (req, res) => {
+const medicineDetail = async (req, res) => {
     var query="" + 
     "SELECT S.scheID, S.scheName, S.scheHour, S.scheMin, S.intake, S.scheDate, S.startDate, S.endDate, MEDISCHEDULES.medicineName, MEDISCHEDULES.dose " + 
     "FROM SCHEDULES S JOIN MEDISCHEDULES ON SCHEDULES.scheID=MEDISCHEDULES.scheID " + 

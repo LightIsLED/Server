@@ -36,3 +36,13 @@ html
                     p
                         input(type="button", value="시간 추가", onclick="timeAppend(this.form)")
                     input(type="submit", value="등록")
+        //- socket 때문에 내가 추가한 부분
+        script(src="/socket.io/socket.io.js")
+        script.
+            var socket = io.connect('http://localhost:2000/',{
+                path: '/socket.io'
+            });
+            io.use((socket,next) => {
+            require('express-session')(socket.request,socket.request, next);
+            });
+            socket.emit("alarm_register");

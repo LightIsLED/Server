@@ -1,3 +1,0 @@
-const alarm = (req, res) => {
-    
-}

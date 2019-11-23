@@ -13,6 +13,7 @@ const calendar = (req, res) => {
     res.render("calendar",{
     userDate: null,
     schedules: null,
+    userID: req.session.user.userID
     });
 }
 
@@ -37,6 +38,7 @@ const calendarDetail =  async (req, res) => {
         res.render("calendar",{
             userDate: req.params.date,
             schedules: schedule,
+            userID: req.session.user.userID
             });
     }).catch((error) => {
         console.error(error);
