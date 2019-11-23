@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.use("/", authRouter);
 router.use("/calendar", calendarRouter);
-//router.use("/users", userRouter);
+router.use("/user", userRouter);
 router.use("/medicines", medicineRouter);
 
 module.exports = router;
