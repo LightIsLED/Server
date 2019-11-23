@@ -5,12 +5,12 @@ html
         title #{title}
         script(src="/socket.io/socket.io.js")
         script.
-            var socket = io.connect('http://localhost:2000',{
+            var socket = io.connect('http://localhost:2000/alarm',{
                 path: '/socket.io'
             });
+            socket.emit("ready", {});
             socket.on('alarm', (data)=>{
-                alert(data.scheName+" "+data.scheTime);
-                document.location.href="/"+date+"/"+data.scheID;
+                alert(data.scheName+" "+data.scheHour+":"+data.scheMin);
             });
     body
         .calendar

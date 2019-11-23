@@ -1,51 +1,76 @@
 const socketIO = require("socket.io");
 var {Schedule} = require("./models");
 var moment = require("moment");
-var schedule = require("node-schedule");
+var sche = require("node-schedule");
 var alarmList = [];
 
-module.exports = (server) => {
+module.exports = (server, app, session) => {
     const io = socketIO(server, {path: '/socket.io'});
-    io.on('connection', (socket)=>{
+
+    app.set('io',io);
+    const add = io.of('/add');
+    const alarm = io.of('/alarm');
+    io.use((socket,next)=>{
+        session(socket.request, socket.request.res,next);
+    });
+    add.on('connection', (socket) => {
         const req = socket.request;
-        console.log("Start connection!");
-        socket.on('alarm_register', async ()=>{
+        console.log("add alarm!");
+
+        socket.on('insert', async (data) => {
+            console.log("success!");
             try{
-                console.log("push alarm to alarmList");
                 await Schedule.findAll({
                     where :{
                         userID: req.session.user.userID,
                         intake: 0
                     },
-                    attributes: ["scheID","scheName","scheDate","scheHour","scheMin"]
+                    attributes: ["scheID","scheName","scheDate","scheHour","scheMin"],
+                    order: ["scheDate","scheHour","scheMin"]
                 }).then(schedules =>{
                     alarmList = [];
                     for(schedule of schedules)
                     {
-                        const time = new Date(schedule.scheDate,schedule.scheHour,schedule.scheMin);
-                        alarmList.push({id: schedule.scheID, name: schedule.scheName, time: time});
+                        const date = new Date(schedule.scheDate);
+                        alarmList.push({
+                            id: schedule.scheID, 
+                            name: schedule.scheName, 
+                            year: date.getFullYear(),
+                            month: date.getMonth(),
+                            day: date.getDate(), 
+                            hour: schedule.scheHour, 
+                            min: schedule.scheMin});
                     }
-                    alarmList.sort((a,b) =>{
-                        return new Date(b.date) - new Date(a.date);
-                    });
-                });                
-                console.log(alarmList);
+                });
             }catch(error){
                 console.log(error);
-            }   
+            }
         });
+        socket.on('disconnect',() =>{
+            console.log("close add connection");
+        });
+        
+    });
 
-        if(alarmList.length)
-        {
-            schedule.scheduleJob(alarmList[0].time,()=>{
-                var msg = {
-                    scheID: alarmList[0].id,
-                    scheName: alarmList[0].name,
-                    scheTime: alarmList[0].time
-                };
-                io.to(id).emit('alarm', msg);
-                alatmList.shift();
-            });
-        }
+    alarm.on('connection', (socket)=>{
+        console.log("alert alarm!");
+
+        socket.on('ready', (data) =>{
+            if(alarmList.length)
+            {
+                const time = new Date(alarmList[0].year,alarmList[0].month,alarmList[0].day,alarmList[0].hour,alarmList[0].min);
+                var j = sche.scheduleJob(time,()=>{
+                    var msg = {
+                        scheID: alarmList[0].id,
+                        scheName: alarmList[0].name,
+                        scheHour: alarmList[0].hour,
+                        scheMin: alarmList[0].min
+                    };
+                    socket.emit('alarm',msg);
+                    alarmList.shift();
+                });
+            }
+        });
+        
     });
 };

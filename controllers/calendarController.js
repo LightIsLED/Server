@@ -12,8 +12,7 @@ const moment = require('moment');
 const calendar = (req, res) => {
     res.render("calendar",{
     userDate: null,
-    schedules: null,
-    userID: req.session.user.userID
+    schedules: null
     });
 }
 
@@ -37,8 +36,7 @@ const calendarDetail =  async (req, res) => {
         console.log(schedule);
         res.render("calendar",{
             userDate: req.params.date,
-            schedules: schedule,
-            userID: req.session.user.userID
+            schedules: schedule
             });
     }).catch((error) => {
         console.error(error);
