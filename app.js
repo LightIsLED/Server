@@ -36,6 +36,4 @@ app.use((err, req, res) => {
     res.render("error");
 });
 
-app.use(express.logger())
-
 module.exports = app;
