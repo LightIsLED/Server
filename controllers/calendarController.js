@@ -28,7 +28,8 @@ const calendarDetail =  async (req, res) => {
     console.log(dateString);
     await Schedule.findAll({
         where: {
-            userID: req.session.user.userID,
+            //test를 위해 임시로 1로 둠
+            userID: 1,//req.session.user.userID,
             scheDate: Date.parse(dateString),
         },
         attributes: ["scheID","scheName","scheHour","scheMin", "scheDate", "intake"]

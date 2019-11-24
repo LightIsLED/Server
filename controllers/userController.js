@@ -3,7 +3,8 @@ const userDetail = async (req, res) => {
     try{
         await User.findOne({
             where:{
-                userID: req.session.user.userID
+                //test를 위해 임시로 1로 둠
+                userID: 1//req.session.user.userID
             },
             attributes: ["userName","birth","sex","accompanierName","accompanierPhone"]
         }).then((user)=>{
@@ -21,7 +22,8 @@ const userEdit = async (req,res) => {
     try{
         await User.findOne({
             where:{
-                userID: req.session.user.userID
+                //테스트를 위해 임시로 1로 둠
+                userID: 1//req.session.user.userID
             },
             attributes: ["userName","birth","sex","accompanierName","accompanierPhone"]
         }).then((user)=>{
@@ -43,7 +45,8 @@ const userUpdate = async (req, res) => {
             accompanierPhone: accompanierPhone
         },{
             where: {
-                userID: req.session.user.userID
+                //test를 위해 임시로 1로 둠
+                userID: 1//req.session.user.userID
             }
         }).then((user)=>{
             res.redirect("/user");
