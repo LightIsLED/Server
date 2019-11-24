@@ -21,9 +21,11 @@ const calendarDetail =  async (req, res) => {
     if(req.params.date<0){
         var value = Math.abs(req.params.date);
         dateString = moment().subtract(value, 'd');
+        dateString = moment(dateString).format('YYYY-MM-DD');
     }
     else if (req.params.date>0){
         dateString = moment().add(req.params.date, 'd');
+        dateString = moment(dateString).format('YYYY-MM-DD');
     }
     console.log(dateString);
     await Schedule.findAll({
