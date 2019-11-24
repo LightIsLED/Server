@@ -1,8 +1,9 @@
-const { userDetail, userUpdate } = require("../controllers/userController");
+const { userDetail, userEdit, userUpdate } = require("../controllers/userController");
 const express = require("express");
 const router = express.Router();
 
-router.get("/:id", userDetail); // profile 보기
-router.post("/:id/edit", userUpdate); //profile 수정
+router.get("", userDetail); // profile 보기
+router.get("/edit", userEdit); //profile 수정 페이지
+router.post("/edit",userUpdate);//profile 수정
 
 module.exports = router;
