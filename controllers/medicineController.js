@@ -39,6 +39,7 @@ const addForm = (req, res, next) => {
     res.render("addForm", {
         title: "Mediger-AddAlarm",
         user: null,
+        userID: req.session.user.userID
     });
 };
 
