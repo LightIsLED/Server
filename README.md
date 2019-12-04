@@ -72,6 +72,12 @@
     - 사용자가 오늘 먹어야 할 알람의 리스트를 보여줌.
         - 알람에는 세부 약 이름과 복용량이 들어있음.
 
+
+- 알람 (명지)
+    - `npm i socket.io` 설치 필요
+    - 설치했는데 안되면 물어볼것 
+    - 내가 너무 package 많이 설치해서 뭐가 필요한지 기억이 안나...ㅎ.ㅎ.ㅎ
+
 - `user profile` 페이지 (명지)
     - 변수이름 : `user`, 객체임(?).
         - `user.userName`,`user.birth`,`user.sex`(0: 남, 1: 여), `user.accompanierName`,`user.accompanierPhone` 값 포함.
@@ -82,3 +88,4 @@
         - 이 때 이름은 `accompanierName`, 전화번호는 `accompanierPhone`에 담겨 전송됨.
         - 그리고 다시 `user profile` 페이지로 넘어감.
     - 보호자 정보 수정 후에는 보호자 정보가 표시 됨.
+

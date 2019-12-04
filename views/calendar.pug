@@ -3,6 +3,15 @@ html
 - var date = new Date().getDate();
     head
         title #{title}
+        script(src="/socket.io/socket.io.js")
+        script.
+            var socket = io.connect('http://localhost:2000/alarm',{
+                path: '/socket.io'
+            });
+            socket.emit("ready", {});
+            socket.on('alarm', (data)=>{
+                alert(data.scheName+" "+data.scheHour+":"+data.scheMin);
+            });
     body
         .calendar
             a(href="/calendar/"+`${-2}`) #{date-2}
@@ -23,14 +32,5 @@ html
                     else
                         li="미복용: " + "grey"
                     a(href="/calendar/"+`${userDate}`+"/"+`${schedule.scheID}`+"") 상세 정보
-
-
-                
-        //- a(href=dateUrl+"1") aa 
-        //- 자신이 설정해둔 데이터에 맞는 알람ID로 숫자 바꿀 것 ex) 1-> 3 뭐 이렇게 아님 안돌아감
-        //- front 내가 만드는데 실패해서....ㅎ..
-        //-- var dateUrl = "calendar/"+`${userDate}`+"/"+`${schedule.scheID}`+"";
-
-
-        
-        include footer.pug
+        .footer
+            include footer.pug
